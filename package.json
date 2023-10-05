@@ -6,7 +6,6 @@
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
-    "start": "npx tsc && tsc src/index.ts",
     "main": "tsc src/index.ts"
   },
   "repository": {

@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "baseUrl": "./src",
+    "baseUrl": "./",
    //  "paths": {},
 
     /* Visit https://aka.ms/tsconfig to read more about this file */
@@ -112,5 +112,5 @@
     "src/**/*.ts",
     "dist/types.d.ts"
   ],
-  "exclude": ["test"]
+  "exclude": ["test", "dist"]
 }
