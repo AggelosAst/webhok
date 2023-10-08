@@ -70,9 +70,9 @@ export type EmbedField = {
 };
 
 export type webhookOptions = {
-    content: string,
-    embeds: Embed,
-    username : string
+    content?: string,
+    embeds?: Embed,
+    username? : string
 }
 export type webhookError = {
     message: string,
