@@ -29,17 +29,17 @@ export namespace webhookClient {
                             response : {
                                 data: {
                                     message: "Successfully sent",
-                                    payloadType: data.embeds == undefined || null ? "content" : "Embeds<Embed>"
+                                    payloadType: data.embeds == undefined || null ? "content" : "Embed",
+                                    input: JSON.stringify(data)
                                 }
                             } /* Soontm */
                         })
                     }
                 }).catch((errorResponse: AxiosError) => {
                     const errorData : webhookError = errorResponse.response?.data as unknown as webhookError
-                    console.log(errorData)
                     /* Just to be safe */
                     if (errorData.retry_after && errorResponse.response?.headers?.["x-ratelimit-reset-after"] && errorResponse.status == 429){
-                        /* We know the individual is ratelimited 100% */
+                        /* We know the individual is ratelimited 50% */
                         reject({
                             error: {
                                 data: {
@@ -49,6 +49,7 @@ export namespace webhookClient {
                                 }
                             }
                         })
+                        /* We know the individual is ratelimited 100% */
                     } else if (errorData.code !== undefined && errorData.code === 0 && errorData.message.includes("blocked")){
                         reject({
                             error: {
@@ -60,14 +61,14 @@ export namespace webhookClient {
                             }
                         })
                     } else {
-                        console.log("Please contact aggelos at this point")
+                        reject({
+                            error: {
+                                data: {
+                                    message: errorData.message,
+                                }
+                            }
+                        })
                     }
-                    // reject({
-                    //     error: {
-                    //         data: errorResponse.response?.data,
-                    //         statusCode: errorResponse.code,
-                    //     }
-                    // })
                 })
             })
         }
