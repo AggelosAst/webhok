@@ -36,15 +36,15 @@ const url = 'https://discord.com/api/webhooks/id/token';
 const data = {
     content: string, /* the text content */
     embeds: Embed, /* the discord embed */
-    username : string /* the webhook name */
+    username: string /* the webhook name */
 };
 
 webhook.executeWebhook(url, data)
-  .then((result) => {
-    console.log('Webhook sent successfully:', result);
-  })
-  .catch((error) => {
-    console.error('Error sending webhook:', error);
-  });
+    .then((result) => {
+        console.log('Webhook sent successfully:', result);
+    })
+    .catch((error) => {
+        console.error('Error sending webhook:', error);
+    });
 
 ```
