@@ -1,7 +1,13 @@
 {
   "name": "webhok",
-  "version": "1.0.0",
-  "keywords": ["webhook", "discord", "easyhttp", "easyrequest", "discordwebhook"],
+  "version": "1.1.0",
+  "keywords": [
+    "webhook",
+    "discord",
+    "easyhttp",
+    "easyrequest",
+    "discordwebhook"
+  ],
   "description": "An under-maintenance webhook client for discord to assist you into sending requests to webhooks.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -19,6 +25,7 @@
     "typescript": "^5.2.2"
   },
   "dependencies": {
-    "axios": "^1.5.1"
+    "axios": "^1.5.1",
+    "webhok": "^1.1.0"
   }
 }

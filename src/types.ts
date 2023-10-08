@@ -7,7 +7,6 @@ export type webhookExecution = {
     error? : {
         data: string | object,
         statusCode: string,
-        statusText: string
     }
 }
 export type Embed = {
@@ -74,4 +73,10 @@ export type webhookOptions = {
     content: string,
     embeds: Embed,
     username : string
+}
+export type webhookError = {
+    message: string,
+    retry_after: number,
+    global: boolean,
+    code?: number,
 }

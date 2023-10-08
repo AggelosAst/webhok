@@ -1,6 +1,8 @@
 import Axios, {AxiosResponse, AxiosError} from "axios"
 import axios from "axios";
-import {Options, webhookOptions, webhookExecution} from "./types"
+import {Options, webhookOptions, webhookExecution, webhookError} from "./types"
+import {Helper} from "./helper";
+
 interface webhookController {
     readonly options : Options
     executeWebhook: (url: string, data: webhookOptions) => Promise<webhookExecution>
@@ -22,17 +24,47 @@ export namespace webhookClient {
                     },
                     responseType: "json"
                 }).then((response: AxiosResponse) => {
-                    resolve({
-                        response : "Testing" /* Soontm */
-                    })
+                    if (response.status === 204){
+                        resolve({
+                            response : "Request Completed" /* Soontm */
+                        })
+                    }
                 }).catch((errorResponse: AxiosError) => {
-                    reject({
-                        error: {
-                            data: errorResponse.response?.data,
-                            statusCode: errorResponse.code,
-                            status: errorResponse.status
-                        }
-                    })
+                    const errorData : webhookError = errorResponse.response?.data as unknown as webhookError
+                    console.log(errorData)
+                    /* Just to be safe */
+                 //   console.log( errorResponse.response)
+                //   console.log(errorData.retry_after,  errorResponse.response?.headers?.["x-ratelimit-reset-after"], errorResponse.status)
+                    if (errorData.retry_after && errorResponse.response?.headers?.["x-ratelimit-reset-after"] && errorResponse.status == 429){
+                        /* We know the individual is ratelimited 100% */
+                        reject({
+                            error: {
+                                data: {
+                                    message: errorData.message,
+                                    ratelimitType: !errorData.global ? "Local" : "Global",
+                                    duration: Helper.formatTime(errorResponse.response?.headers?.["x-ratelimit-reset-after"])
+                                }
+                            }
+                        })
+                    } else if (errorData.code !== undefined && errorData.code === 0 && errorData.message.includes("blocked")){
+                        reject({
+                            error: {
+                                data: {
+                                    message: errorData.message,
+                                    ratelimitType: "Global + Aggressive (IP Ban mode)",
+                                    duration: "Unknown"
+                                }
+                            }
+                        })
+                    } else {
+                        console.log("Please contact aggelos at this point")
+                    }
+                    // reject({
+                    //     error: {
+                    //         data: errorResponse.response?.data,
+                    //         statusCode: errorResponse.code,
+                    //     }
+                    // })
                 })
             })
         }
