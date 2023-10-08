@@ -26,15 +26,18 @@ export namespace webhookClient {
                 }).then((response: AxiosResponse) => {
                     if (response.status === 204){
                         resolve({
-                            response : "Request Completed" /* Soontm */
+                            response : {
+                                data: {
+                                    message: "Successfully sent",
+                                    payloadType: data.embeds == undefined || null ? "content" : "Embeds<Embed>"
+                                }
+                            } /* Soontm */
                         })
                     }
                 }).catch((errorResponse: AxiosError) => {
                     const errorData : webhookError = errorResponse.response?.data as unknown as webhookError
                     console.log(errorData)
                     /* Just to be safe */
-                 //   console.log( errorResponse.response)
-                //   console.log(errorData.retry_after,  errorResponse.response?.headers?.["x-ratelimit-reset-after"], errorResponse.status)
                     if (errorData.retry_after && errorResponse.response?.headers?.["x-ratelimit-reset-after"] && errorResponse.status == 429){
                         /* We know the individual is ratelimited 100% */
                         reject({
