@@ -24,7 +24,7 @@ export namespace webhookClient {
                     },
                     responseType: "json"
                 }).then((response: AxiosResponse) => {
-                    if (response.status === 204){
+                    if (response.status === 201){
                         resolve({
                             response : {
                                 data: {
